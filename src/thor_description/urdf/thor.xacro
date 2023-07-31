@@ -1,0 +1,197 @@
+<?xml version="1.0" ?>
+
+<robot name="thor" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find thor_description)/urdf/thor.gazebo" />
+    
+    <link name="dummy_link" />
+
+    <joint name="dummy_joint" type="fixed">
+        <parent link="dummy_link"/>
+        <child link="link_base"/>
+    </joint>
+    
+    <link name="link_base">       
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/base.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/base.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="brown">
+                <color rgba="0.369 0.216 0 1" />
+            </material>
+        </visual>
+    </link>
+    
+    
+    <joint name="joint_base_art1_yaw" type="revolute">
+      <origin xyz="0 0 0.104" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <parent link="link_base"/>
+      <child link="link_art1"/>
+      <limit lower="-3.1415" upper="3.1415" effort="4" velocity="1" />
+    </joint>
+    
+   
+     <link name="link_art1">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art1.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+           
+            <material name="black">
+                <color rgba="0.1 0.1 0.1 1" />
+            </material>
+        </visual>
+    </link>
+    
+    <joint name="joint_art1_art2_pitch" type="revolute">
+        <origin xyz="0 -0.0318752 0.0974304" rpy="1.5707963267948966 -1.5707963267948966 0"/>
+	<axis xyz="0 0 1"/>
+	<parent link="link_art1"/>
+        <child link="link_art2"/>
+	<limit lower="-1.5707963267948966" upper="1.5707963267948966" effort="4" velocity="1" />
+    </joint>
+    
+    <link name="link_art2">
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art2.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art2.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+           
+            <material name="brown" />
+        </visual>
+    </link>
+    
+    <joint name="joint_art2_art3_pitch" type="revolute">
+        <origin xyz="0.160 0 0" rpy="0 0 0"/>
+	<axis xyz="0 0 1"/>
+	<parent link="link_art2"/>
+        <child link="link_art3"/>
+	<limit lower="-1.5707963267948966" upper="1.5707963267948966" effort="4" velocity="1" />
+    </joint>
+    
+    <link name="link_art3">
+    	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art3.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art3.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+           
+            <material name="black" />
+        </visual>
+    </link>
+    
+    <joint name="joint_art3_art4_roll" type="revolute">
+        <origin xyz="0.0885 0 -0.035" rpy="0 1.5707963267948966 0"/>
+	<axis xyz="0 0 1"/>
+	<parent link="link_art3"/>
+        <child link="link_art4"/>
+	<limit lower="-3.1415" upper="3.1415" effort="4" velocity="1" />
+    </joint>
+
+    <link name="link_art4">
+    	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art4.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art4.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+           
+            <material name="brown" />
+        </visual>
+    </link>
+
+    <joint name="joint_art4_art5_pitch" type="revolute">
+        <origin xyz="0 0 0.1" rpy="0 -1.5707963267948966 0"/>
+	<axis xyz="0 0 1"/>
+	<parent link="link_art4"/>
+        <child link="link_art5"/>
+	<limit lower="-1.5" upper="1.5" effort="4" velocity="1" />
+    </joint>
+    
+    <link name="link_art5">
+    	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art5.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art5.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+           
+            <material name="black" />
+        </visual>
+    </link>
+
+    
+
+    <joint name="joint_art5_art6_roll" type="revolute">
+        <origin xyz="0 0 0" rpy="0 1.5707963267948966 0"/>
+	<axis xyz="0 0 1"/>
+	<parent link="link_art5"/>
+        <child link="link_art6"/>
+	<limit lower="-3.1415" upper="3.1415" effort="4" velocity="1" />
+    </joint>
+    
+    <link name="link_art6">
+    	<collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art6.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://thor_description/meshes/art6.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+           
+            <material name="black" />
+        </visual>
+    </link>
+    
+
+    
+</robot>
