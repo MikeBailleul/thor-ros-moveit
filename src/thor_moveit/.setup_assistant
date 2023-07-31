@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: thor_description
+    relative_path: urdf/thor.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/thor.srdf
+  CONFIG:
+    author_name: mike
+    author_email: mike@mike.mike
+    generated_timestamp: 1690845800

@@ -1,0 +1,12 @@
+controller_list:
+  - name: arm_position_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - joint_base_art1_yaw
+      - joint_art1_art2_pitch
+      - joint_art2_art3_pitch
+      - joint_art3_art4_roll
+      - joint_art4_art5_pitch
+      - joint_art5_art6_roll
