@@ -10,9 +10,10 @@
 class ThorHardwareInterface : public hardware_interface::RobotHW
 {
 private:
-    hardware_interface::JointStateInterface jnt_state_interface;
-    hardware_interface::PositionJointInterface jnt_pos_interface;
+    hardware_interface::JointStateInterface joint_state_interface;
+    hardware_interface::PositionJointInterface joint_pos_interface;
     std::unique_ptr<controller_manager::ControllerManager> controller_manager;
+    std::vector<std::string> joint_names;
     double cmd[6];
     double pos[6];
     double vel[6];

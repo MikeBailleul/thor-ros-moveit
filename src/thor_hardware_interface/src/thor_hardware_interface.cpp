@@ -2,26 +2,31 @@
 
 ThorHardwareInterface::ThorHardwareInterface()
 {
+    joint_names = {"joint_base_art1_yaw", "joint_art1_art2_pitch", "joint_art2_art3_pitch", 
+                    "joint_art3_art4_roll", "joint_art4_art5_pitch", "joint_art5_art6_roll"};
+
+
     ROS_INFO("Initializing ThorHardwareInterface");
-    for (int i = 0; i < 6; i++)
+    for (std::size_t i = 0; i < joint_names.size(); ++i)
     {
         cmd[i] = 0;
         pos[i] = 0;
         vel[i] = 0;
         eff[i] = 0;
-        char joint_name[10];
-        sprintf(joint_name, "joint%d", i + 1);
-        ROS_INFO("Registering handle for %s", joint_name);
-        hardware_interface::JointStateHandle state_handle(joint_name, &pos[i], &vel[i], &eff[i]);
-        jnt_state_interface.registerHandle(state_handle);
+        
+        ROS_INFO("Registering handle for %s", joint_names[i].c_str());
+        
+        hardware_interface::JointStateHandle state_handle(joint_names[i], &pos[i], &vel[i], &eff[i]);
+        joint_state_interface.registerHandle(state_handle);
 
-        hardware_interface::JointHandle pos_handle(jnt_state_interface.getHandle(joint_name), &cmd[i]);
-        jnt_pos_interface.registerHandle(pos_handle);
+        hardware_interface::JointHandle pos_handle(joint_state_interface.getHandle(joint_names[i]), &cmd[i]);
+        joint_pos_interface.registerHandle(pos_handle);
     }
 
     ROS_INFO("Registering interfaces");
-    registerInterface(&jnt_state_interface);
-    registerInterface(&jnt_pos_interface);
+    registerInterface(&joint_state_interface);
+    registerInterface(&joint_pos_interface);
+    
     ROS_INFO("Creating ControllerManager");
     controller_manager.reset(new controller_manager::ControllerManager(this));
 }
@@ -33,8 +38,8 @@ void ThorHardwareInterface::read()
   static int counter = 0;
     if (counter % 100 == 0) {
     ROS_INFO("Reading from hardware");
-        for (int i = 0; i < 6; i++) {
-            ROS_INFO_STREAM("Command for joint " << i << ": " << cmd[i]);
+        for (std::size_t i = 0; i < joint_names.size(); ++i) {
+            ROS_INFO_STREAM("Pos for " << joint_names[i].c_str() << ": " << pos[i]);
         }
     }
     counter++;
@@ -47,8 +52,8 @@ void ThorHardwareInterface::write()
   static int counter = 0;
     if (counter % 100 == 0) {
     ROS_INFO("Writing to hardware");
-        for (int i = 0; i < 6; i++) {
-            ROS_INFO_STREAM("Command for joint " << i << ": " << cmd[i]);
+        for (std::size_t i = 0; i < joint_names.size(); ++i) {
+            ROS_INFO_STREAM("Command for " << joint_names[i].c_str() << ": " << cmd[i]);
         }
     }
     counter++;

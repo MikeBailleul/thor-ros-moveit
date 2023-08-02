@@ -1,5 +1,4 @@
 #include <ros/ros.h>
-#include <controller_manager/controller_manager.h>
 #include "thor_hardware_interface/thor_hardware_interface.h"
 
 int main(int argc, char **argv)
