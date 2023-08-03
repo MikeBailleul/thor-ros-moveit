@@ -1,10 +1,5 @@
 <?xml version="1.0"?>
 <robot>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>/thor</robotNamespace>
-        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-    </plugin>
-
     <gazebo reference="link_base">
         <material>Gazebo/White</material>
     </gazebo>
@@ -26,4 +21,9 @@
     <gazebo reference="link_art6">
         <material>Gazebo/Black</material>
     </gazebo>
+
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/thor</robotNamespace>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
 </robot>

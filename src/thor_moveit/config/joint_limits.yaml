@@ -38,3 +38,13 @@ joint_limits:
     max_velocity: 1
     has_acceleration_limits: false
     max_acceleration: 0
+  joint_hand_finger_left:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
+  joint_hand_finger_right:
+    has_velocity_limits: true
+    max_velocity: 0.2
+    has_acceleration_limits: false
+    max_acceleration: 0
