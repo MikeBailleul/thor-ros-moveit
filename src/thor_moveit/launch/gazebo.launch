@@ -8,6 +8,7 @@
   <arg name="initial_joint_positions" default=" -J joint_art1_art2_pitch 0 -J joint_art2_art3_pitch 0 -J joint_art3_art4_roll 0 -J joint_art4_art5_pitch 0 -J joint_art5_art6_roll 0 -J joint_base_art1_yaw 0" doc="Initial joint configuration of the robot"/>
 
   <!-- Start Gazebo paused to allow the controllers to pickup the initial pose -->
+  <param name="/use_sim_time" value="true"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch" pass_all_args="true">
     <arg name="paused" value="true"/>
   </include>
@@ -19,7 +20,7 @@
   <arg name="unpause" value="$(eval '' if arg('paused') else '-unpause')" />
 
   <!-- Spawn the robot in Gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot $(arg unpause) $(arg world_pose) $(arg initial_joint_positions)"
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model thor $(arg unpause) $(arg world_pose) $(arg initial_joint_positions)"
     respawn="false" output="screen" />
 
   <!-- Load the controller parameters onto the parameter server -->

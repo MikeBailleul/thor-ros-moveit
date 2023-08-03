@@ -2,6 +2,6 @@
 <launch>
 
   <!-- Run the hardware interface node -->
-  <node name="thor_hardware_interface_node" pkg="thor_hardware_interface" type="thor_hardware_interface_node" output="screen" ns="/thor" />
+  <node name="thor_hardware_interface_node" pkg="thor_hardware_interface" type="thor_hardware_interface_node" output="screen" />
 
 </launch>

@@ -26,6 +26,8 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
   <!-- Run the main MoveIt executable -->
+  <remap from="/follow_joint_trajectory" to="arm_position_controller/follow_joint_trajectory"/>
+  
   <include file="$(dirname)/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>
     <arg name="moveit_controller_manager" value="$(arg moveit_controller_manager)" />
@@ -45,5 +47,14 @@
   <include file="$(dirname)/default_warehouse_db.launch" if="$(arg db)">
     <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
   </include>
+  
+  <!-- Start Hardware interface -->
+  <include file="$(find thor_hardware_interface)/launch/thor_hardware_interface.launch" />
+  
+  <!-- Start moveit controllers
+       They are already launched from trajectory_execution
+       but under ns=move_group preventing the hardware interface from finding them,
+       this is why we launch them from here as well -->
+  <include file="$(dirname)/$(arg moveit_controller_manager)_moveit_controller_manager.launch.xml" />
 
 </launch>

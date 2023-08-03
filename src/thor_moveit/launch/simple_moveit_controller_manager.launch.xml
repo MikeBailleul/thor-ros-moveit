@@ -5,4 +5,10 @@
   <!-- Load controller list to the parameter server -->
   <rosparam file="$(find thor_moveit)/config/simple_moveit_controllers.yaml" />
   <rosparam file="$(find thor_moveit)/config/ros_controllers.yaml" />
+  
+  <!-- Load controller manager -->
+  <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false"
+      output="screen" args="spawn arm_position_controller" />
+
+  
 </launch>
