@@ -253,7 +253,7 @@
         <child link="link_finger_left" />
         <origin rpy="0 0 0" xyz="0.05 0.02 0" />
         <axis xyz="-1 1.5 0" />
-        <limit effort="100" lower="0.0" upper="0.03" velocity="0.2" />
+        <limit effort="100" lower="0.0" upper="0.03" velocity="10" />
         <dynamics damping="0.3" />
     </joint>
     <joint name="joint_hand_finger_right" type="prismatic">
@@ -261,7 +261,7 @@
         <child link="link_finger_right" />
         <origin rpy="0 0 0" xyz="-0.05 0.02 0" />
         <axis xyz="1 1.5 0" />
-        <limit effort="100" lower="0.0" upper="0.03" velocity="0.2" />
+        <limit effort="100" lower="0.0" upper="0.03" velocity="10" />
         <mimic joint="joint_hand_finger_left" />
         <dynamics damping="0.3" />
     </joint>
@@ -362,6 +362,26 @@
         </joint>
         <actuator name="joint_art5_art6_roll_motor">
             <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_hand_finger_left">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_hand_finger_left">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_hand_finger_left_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_hand_finger_right">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_hand_finger_right">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_hand_finger_right_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>

@@ -8,6 +8,12 @@ controller_list:
       - joint_art3_art4_roll
       - joint_art4_art5_pitch
       - joint_art5_art6_roll
+  - name: fake_hand_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - joint_hand_finger_left
 initial:  # Define initial robot poses per group
   - group: arm
     pose: vertical
+  - group: hand
+    pose: closed

@@ -38,3 +38,13 @@ arm_position_controller:
       d: 1
       i: 1
       i_clamp: 1
+hand_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - joint_hand_finger_left
+  gains:
+    joint_hand_finger_left:
+      p: 1
+      d: 0
+      i: 0
+      i_clamp: 1

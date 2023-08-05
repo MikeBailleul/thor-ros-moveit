@@ -8,7 +8,7 @@
   
   <!-- Load controller manager -->
   <node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false"
-      output="screen" args="spawn arm_position_controller" />
+      output="screen" args="spawn arm_position_controller hand_controller" />
 
   
 </launch>
