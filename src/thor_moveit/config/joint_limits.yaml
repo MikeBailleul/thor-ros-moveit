@@ -40,11 +40,11 @@ joint_limits:
     max_acceleration: 0
   joint_hand_finger_left:
     has_velocity_limits: true
-    max_velocity: 0.2
+    max_velocity: 10
     has_acceleration_limits: false
     max_acceleration: 0
   joint_hand_finger_right:
     has_velocity_limits: true
-    max_velocity: 0.2
+    max_velocity: 10
     has_acceleration_limits: false
     max_acceleration: 0

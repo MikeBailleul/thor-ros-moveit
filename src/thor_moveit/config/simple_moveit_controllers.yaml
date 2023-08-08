@@ -17,8 +17,3 @@ controller_list:
     parallel: true
     joints:
       - joint_hand_finger_left
-initial:  # Define initial robot poses per group
-  - group: arm
-    pose: vertical
-  - group: hand
-    pose: closed

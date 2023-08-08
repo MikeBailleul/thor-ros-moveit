@@ -28,6 +28,11 @@
                 <color rgba="1 1 1 1" />
             </material>
         </visual>
+
+        <inertial>
+            <mass value="20" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
 
@@ -59,6 +64,11 @@
                 <color rgba="0.4 0.4 0.4 1" />
             </material>
         </visual>
+
+        <inertial>
+            <mass value="1.6" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
     <joint name="joint_art1_art2_pitch" type="revolute">
@@ -85,6 +95,11 @@
 
             <material name="white" />
         </visual>
+
+        <inertial>
+            <mass value="0.8" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
     <joint name="joint_art2_art3_pitch" type="revolute">
@@ -112,6 +127,11 @@
 
             <material name="black" />
         </visual>
+
+        <inertial>
+            <mass value="1.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
     <joint name="joint_art3_art4_roll" type="revolute">
@@ -140,6 +160,11 @@
 
             <material name="white" />
         </visual>
+
+        <inertial>
+            <mass value="0.5" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
     <joint name="joint_art4_art5_pitch" type="revolute">
@@ -168,6 +193,11 @@
 
             <material name="black" />
         </visual>
+
+        <inertial>
+            <mass value="0.5" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
     <joint name="joint_art5_art6_roll" type="revolute">
@@ -196,6 +226,11 @@
 
             <material name="black" />
         </visual>
+
+        <inertial>
+            <mass value="0.5" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
     </link>
 
     <joint name="joint_arm_hand" type="fixed">
