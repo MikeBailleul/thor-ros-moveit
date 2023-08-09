@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(thor_hardware_interface)
 
-# Compile as C++11
-add_compile_options(-std=c++11)
-
 # Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
