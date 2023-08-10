@@ -11,7 +11,6 @@ class ThorHardwareInterface : public hardware_interface::RobotHW {
 private:
     hardware_interface::JointStateInterface joint_state_interface;
     hardware_interface::PositionJointInterface joint_pos_interface;
-    hardware_interface::EffortJointInterface joint_eff_interface;
     std::vector<std::string> joint_names;
     ros::Publisher joint_state_pub;
 
