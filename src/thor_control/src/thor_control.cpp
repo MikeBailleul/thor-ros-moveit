@@ -21,11 +21,14 @@ int main(int argc, char **argv) {
     spinner.start();
 
     static const std::string GROUP_ARM = "arm";
-    static const std::string GROUP_HAND = "hand";
+    static const std::string GROUP_GRIPPER = "hand";
+
+    static const int GRIPPER_STATE_OPENED = 0;
+    static const int GRIPPER_STATE_CLOSED = 0.03;
 
     // MoveGroupInterface init
     moveit::planning_interface::MoveGroupInterface move_group_arm(GROUP_ARM);
-    moveit::planning_interface::MoveGroupInterface move_group_hand(GROUP_HAND);
+    moveit::planning_interface::MoveGroupInterface move_group_gripper(GROUP_GRIPPER);
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
@@ -56,7 +59,6 @@ int main(int argc, char **argv) {
 
     visual_tools.prompt("Next to visualize plan to go back Vertical");
 
-    
     // ----------------- visualize plan without obstacles -----------------
 
     move_group_arm.setStartState(*move_group_arm.getCurrentState());
@@ -132,6 +134,56 @@ int main(int argc, char **argv) {
     visual_tools.deleteAllMarkers();
     visual_tools.publishText(pose_text, "Goal reached", rvt::WHITE, rvt::XLARGE);
     visual_tools.trigger();
+    visual_tools.prompt("Next to add ball");
+
+    // ----------------- add a ball -----------------
+
+    moveit_msgs::CollisionObject collision_object_ball;
+    collision_object_ball.header.frame_id = move_group_arm.getPlanningFrame();
+    collision_object_ball.id = "collision_object_ball";
+
+    // ball creation
+    shape_msgs::SolidPrimitive primitive_ball;
+    primitive_ball.type = primitive_ball.SPHERE;
+    primitive_ball.dimensions.resize(1);
+    primitive_ball.dimensions[primitive_ball.SPHERE_RADIUS] = 0.02;
+
+    geometry_msgs::Pose pose_ball;
+    pose_ball.orientation.w = 1.0;
+    pose_ball.position.x = 0;
+    pose_ball.position.y = -0.33;
+    pose_ball.position.z = 0.02;
+    collision_object_ball.primitives.push_back(primitive_ball);
+    collision_object_ball.primitive_poses.push_back(pose_ball);
+
+    // add ball to world
+    collision_object_ball.operation = collision_object_ball.ADD;
+    collision_objects.push_back(collision_object_ball);
+    planning_scene_interface.addCollisionObjects(collision_objects);
+    ROS_INFO_NAMED("thor_control", "Added ball");
+
+    visual_tools.deleteAllMarkers();
+    visual_tools.trigger();
+    visual_tools.prompt("Next to pickup the ball");
+
+    // ----------------- pick up the ball -----------------
+
+    // to check the current end_effector position/orientation of Thor in RViz
+    // rosrun tf tf_echo /dummy_link /link_art6
+    geometry_msgs::Pose pose_pickup_ball; 
+    pose_pickup_ball.orientation.x = 0.955;
+    pose_pickup_ball.orientation.y = -0.004;
+    pose_pickup_ball.orientation.z = -0.001;
+    pose_pickup_ball.orientation.w = 0.297;
+    pose_pickup_ball.position.x = 0.001;
+    pose_pickup_ball.position.y = -0.239;
+    pose_pickup_ball.position.z = 0.137;
+
+    move_group_arm.setPoseTarget(pose_pickup_ball);
+    move_group_arm.move();
+
+    move_group_gripper.setJointValueTarget("joint_hand_finger_left", GRIPPER_STATE_CLOSED * 0.2);
+    move_group_arm.move();
 
     ros::shutdown();
     return 0;
