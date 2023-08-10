@@ -9,6 +9,10 @@
 
 #include <moveit_visual_tools/moveit_visual_tools.h>
 
+#include <moveit/robot_model_loader/robot_model_loader.h>
+#include <moveit/robot_model/robot_model.h>
+#include <moveit/robot_state/robot_state.h>
+
 int main(int argc, char **argv) {
     ros::init(argc, argv, "thor_control");
     ros::NodeHandle node_handle;
@@ -16,14 +20,16 @@ int main(int argc, char **argv) {
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
-    static const std::string PLANNING_GROUP = "arm";
+    static const std::string GROUP_ARM = "arm";
+    static const std::string GROUP_HAND = "hand";
 
     // MoveGroupInterface init
-    moveit::planning_interface::MoveGroupInterface move_group_interface(PLANNING_GROUP);
+    moveit::planning_interface::MoveGroupInterface move_group_arm(GROUP_ARM);
+    moveit::planning_interface::MoveGroupInterface move_group_hand(GROUP_HAND);
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
 
-    const moveit::core::JointModelGroup *joint_model_group = move_group_interface.getCurrentState()->getJointModelGroup(PLANNING_GROUP);
+    const moveit::core::JointModelGroup *joint_model_group_from_state = move_group_arm.getCurrentState()->getJointModelGroup(GROUP_ARM);
 
     // RViz init
     namespace rvt = rviz_visual_tools;
@@ -37,30 +43,30 @@ int main(int argc, char **argv) {
     visual_tools.publishText(pose_text, "Thor Arm Control Demo", rvt::WHITE, rvt::XLARGE);
 
     ROS_INFO_NAMED("thor_control", "Available Planning Groups:");
-    std::copy(move_group_interface.getJointModelGroupNames().begin(),
-            move_group_interface.getJointModelGroupNames().end(), std::ostream_iterator<std::string>(std::cout, ", "));
+    std::copy(move_group_arm.getJointModelGroupNames().begin(),
+            move_group_arm.getJointModelGroupNames().end(), std::ostream_iterator<std::string>(std::cout, ", "));
 
     visual_tools.trigger();
     visual_tools.prompt("Next to move arm in Grab position");
 
     // ----------------- move ARM to GRAB position -----------------
 
-    move_group_interface.setNamedTarget("grab");
-    move_group_interface.move();
+    move_group_arm.setNamedTarget("grab");
+    move_group_arm.move();
 
     visual_tools.prompt("Next to visualize plan to go back Vertical");
 
     
     // ----------------- visualize plan without obstacles -----------------
 
-    move_group_interface.setStartState(*move_group_interface.getCurrentState());
-    move_group_interface.setNamedTarget("vertical");
+    move_group_arm.setStartState(*move_group_arm.getCurrentState());
+    move_group_arm.setNamedTarget("vertical");
 
-    bool success = (move_group_interface.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    bool success = (move_group_arm.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
     ROS_INFO_NAMED("thor_control", "Visualizing plan without obstacles: %s", success ? "SUCCESS" : "FAILED");
 
     visual_tools.deleteAllMarkers();
-    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_from_state);
     visual_tools.publishText(pose_text, "Plan without obstacles", rvt::WHITE, rvt::XLARGE);
     visual_tools.trigger();
     visual_tools.prompt("Next to add walls around Thor");
@@ -68,7 +74,7 @@ int main(int argc, char **argv) {
     // ----------------- adding objects to environment -----------------
 
     moveit_msgs::CollisionObject collision_object_walls;
-    collision_object_walls.header.frame_id = move_group_interface.getPlanningFrame();
+    collision_object_walls.header.frame_id = move_group_arm.getPlanningFrame();
     collision_object_walls.id = "collision_object_walls";
 
     shape_msgs::SolidPrimitive primitive_wall;
@@ -109,10 +115,10 @@ int main(int argc, char **argv) {
 
     // ----------------- visualize plan with obstacles -----------------
 
-    success = (move_group_interface.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    success = (move_group_arm.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
     ROS_INFO_NAMED("thor_control", "Visualizing plan with obstacles: %s", success ? "SUCCESS" : "FAILED");
 
-    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_from_state);
     visual_tools.publishText(pose_text, "Plan with obstacles", rvt::WHITE, rvt::XLARGE);
     visual_tools.trigger();
     visual_tools.prompt("Next to execute the plan");
@@ -120,7 +126,7 @@ int main(int argc, char **argv) {
     // ----------------- execute the plan -----------------
 
     if (success) {
-        move_group_interface.execute(my_plan);
+        move_group_arm.execute(my_plan);
     }
 
     visual_tools.deleteAllMarkers();
