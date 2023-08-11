@@ -4,11 +4,14 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="thor">
+    <gazebo>
+        <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+            <robotNamespace>/</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        </plugin>
+    </gazebo>
     <gazebo reference="link_base">
         <material>Gazebo/White</material>
-        <plugin name="gazebo_ros_control">
-            <robotNamespace>/</robotNamespace>
-        </plugin>
     </gazebo>
     <gazebo reference="link_art1">
         <material>Gazebo/Black</material>
@@ -28,10 +31,6 @@
     <gazebo reference="link_art6">
         <material>Gazebo/Black</material>
     </gazebo>
-    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
-        <robotNamespace>/thor</robotNamespace>
-        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-    </plugin>
     <link name="dummy_link" />
     <joint name="dummy_joint" type="fixed">
         <parent link="dummy_link" />
@@ -368,10 +367,10 @@
     <transmission name="trans_joint_hand_finger_left">
         <type>transmission_interface/SimpleTransmission</type>
         <joint name="joint_hand_finger_left">
-            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
         <actuator name="joint_hand_finger_left_motor">
-            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
