@@ -6,37 +6,50 @@ joint_state_controller:
 gazebo_ros_control:
   pid_gains:
     joint_base_art1_yaw:
-      p: 100
+      p: 10000
       d: 1
       i: 1
       i_clamp: 1
     joint_art1_art2_pitch:
-      p: 100
+      p: 10000
       d: 1
       i: 1
       i_clamp: 1
     joint_art2_art3_pitch:
-      p: 100
+      p: 10000
       d: 1
       i: 1
       i_clamp: 1
     joint_art3_art4_roll:
-      p: 100
+      p: 1000
       d: 1
       i: 1
       i_clamp: 1
     joint_art4_art5_pitch:
-      p: 100
+      p: 10000
       d: 1
       i: 1
       i_clamp: 1
     joint_art5_art6_roll:
-      p: 100
+      p: 1000
       d: 1
       i: 1
       i_clamp: 1
     joint_hand_finger_left:
-      p: 1
-      d: 0
-      i: 0
+      p: 1000
+      d: 1
+      i: 1
       i_clamp: 1
+
+arm_position_controller:
+  constraints:
+    joint_base_art1_yaw: {trajectory: 0.01, goal: 0.01}
+    joint_art1_art2_pitch: {trajectory: 0.01, goal: 0.01}
+    joint_art2_art3_pitch: {trajectory: 0.01, goal: 0.01}
+    joint_art3_art4_roll: {trajectory: 0.01, goal: 0.01}
+    joint_art4_art5_pitch: {trajectory: 0.01, goal: 0.01}
+    joint_art5_art6_roll: {trajectory: 0.01, goal: 0.01}
+hand_controller:
+  constraints:
+    joint_hand_finger_left: {trajectory: 0.01, goal: 0.01}
+    joint_hand_finger_right: {trajectory: 0.01, goal: 0.01}

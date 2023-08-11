@@ -63,7 +63,7 @@
         <axis xyz="0 0 1" />
         <parent link="link_base" />
         <child link="link_art1" />
-        <limit effort="4" lower="-3.1415" upper="3.1415" velocity="1" />
+        <limit effort="8" lower="-3.1415" upper="3.1415" velocity="1" />
     </joint>
     <link name="link_art1">
         <collision>
@@ -92,7 +92,7 @@
         <axis xyz="0 0 1" />
         <parent link="link_art1" />
         <child link="link_art2" />
-        <limit effort="4" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="1" />
+        <limit effort="20" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="1" />
     </joint>
     <link name="link_art2">
         <collision>
@@ -119,7 +119,7 @@
         <axis xyz="0 0 1" />
         <parent link="link_art2" />
         <child link="link_art3" />
-        <limit effort="4" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="1" />
+        <limit effort="8" lower="-1.5707963267948966" upper="1.5707963267948966" velocity="1" />
     </joint>
     <link name="link_art3">
         <collision>
@@ -173,7 +173,7 @@
         <axis xyz="0 0 1" />
         <parent link="link_art4" />
         <child link="link_art5" />
-        <limit effort="4" lower="-1.5" upper="1.5" velocity="1" />
+        <limit effort="6" lower="-1.5" upper="1.5" velocity="1" />
     </joint>
     <link name="link_art5">
         <collision>
