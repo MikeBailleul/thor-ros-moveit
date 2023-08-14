@@ -23,8 +23,8 @@ int main(int argc, char **argv) {
     static const std::string GROUP_ARM = "arm";
     static const std::string GROUP_GRIPPER = "hand";
 
-    static const int GRIPPER_STATE_OPENED = 0;
-    static const int GRIPPER_STATE_CLOSED = 0.03;
+    static const double GRIPPER_STATE_OPENED = 0.0;
+    static const double GRIPPER_STATE_CLOSED = 0.06;
 
     // MoveGroupInterface init
     moveit::planning_interface::MoveGroupInterface move_group_arm(GROUP_ARM);
@@ -180,10 +180,11 @@ int main(int argc, char **argv) {
     pose_pickup_ball.position.z = 0.137;
 
     move_group_arm.setPoseTarget(pose_pickup_ball);
+    move_group_arm.setStartStateToCurrentState();
     move_group_arm.move();
 
     move_group_gripper.setJointValueTarget("joint_hand_finger_left", GRIPPER_STATE_CLOSED * 0.2);
-    move_group_arm.move();
+    move_group_gripper.move();
 
     ros::shutdown();
     return 0;
