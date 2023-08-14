@@ -33,7 +33,7 @@
         <joint name="joint_base_art1_yaw" value="0"/>
     </group_state>
     <group_state name="closed" group="hand">
-        <joint name="joint_hand_finger_left" value="0.03"/>
+        <joint name="joint_hand_finger_left" value="0.06"/>
     </group_state>
     <group_state name="opened" group="hand">
         <joint name="joint_hand_finger_left" value="0"/>
@@ -42,8 +42,8 @@
         <joint name="joint_art1_art2_pitch" value="0.9874"/>
         <joint name="joint_art2_art3_pitch" value="1.5707"/>
         <joint name="joint_art3_art4_roll" value="0.263"/>
-        <joint name="joint_art4_art5_pitch" value="0.3767"/>
-        <joint name="joint_art5_art6_roll" value="2.2234"/>
+        <joint name="joint_art4_art5_pitch" value="-0.7125"/>
+        <joint name="joint_art5_art6_roll" value="3.1022"/>
         <joint name="joint_base_art1_yaw" value="1.8983"/>
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->

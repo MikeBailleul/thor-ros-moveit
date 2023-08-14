@@ -251,16 +251,16 @@
         <parent link="link_hand" />
         <child link="link_finger_left" />
         <origin rpy="0 0 0" xyz="0.05 0.02 0" />
-        <axis xyz="-1 1.5 0" />
-        <limit effort="100" lower="0.0" upper="0.03" velocity="10" />
+        <axis xyz="-0.5547 0.8321 0" />
+        <limit effort="100" lower="0.0" upper="0.06" velocity="10" />
         <dynamics damping="0.3" />
     </joint>
     <joint name="joint_hand_finger_right" type="prismatic">
         <parent link="link_hand" />
         <child link="link_finger_right" />
         <origin rpy="0 0 0" xyz="-0.05 0.02 0" />
-        <axis xyz="1 1.5 0" />
-        <limit effort="100" lower="0.0" upper="0.03" velocity="10" />
+        <axis xyz="0.5547 0.8321 0" />
+        <limit effort="100" lower="0.0" upper="0.06" velocity="10" />
         <mimic joint="joint_hand_finger_left" />
         <dynamics damping="0.3" />
     </joint>
@@ -397,3 +397,4 @@
         </actuator>
     </transmission>
 </robot>
+
