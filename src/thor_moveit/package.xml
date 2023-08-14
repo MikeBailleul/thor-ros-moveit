@@ -35,6 +35,8 @@
   <!-- This package is referenced in the warehouse launch files, but does not build out of the box at the moment. Commented the dependency until this works. -->
   <!-- <run_depend>warehouse_ros_mongo</run_depend> -->
   <run_depend>thor_description</run_depend>
+  <!-- Package needed for mimic joint in gazebo -->
+  <run_depend>roboticsgroup_gazebo_plugins</run_depend>
 
 
 </package>

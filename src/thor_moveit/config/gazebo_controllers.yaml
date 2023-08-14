@@ -36,7 +36,12 @@ gazebo_ros_control:
       i: 1
       i_clamp: 1
     joint_hand_finger_left:
-      p: 1000
+      p: 10000
+      d: 1
+      i: 1
+      i_clamp: 1
+    joint_hand_finger_right:
+      p: 10000
       d: 1
       i: 1
       i_clamp: 1
@@ -53,3 +58,6 @@ hand_controller:
   constraints:
     joint_hand_finger_left: {trajectory: 0.01, goal: 0.01}
     joint_hand_finger_right: {trajectory: 0.01, goal: 0.01}
+  stop_trajectory_duration: 0.5
+  state_publish_rate:  125
+  action_monitor_rate: 10

@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     ThorHardwareInterface thor;
     controller_manager::ControllerManager cm(&thor, nh);
 
-    ros::AsyncSpinner spinner(4, &queue);
+    ros::AsyncSpinner spinner(1, &queue);
     spinner.start();
 
     ros::Time ts = ros::Time::now();

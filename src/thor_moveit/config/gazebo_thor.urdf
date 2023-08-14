@@ -264,6 +264,18 @@
         <mimic joint="joint_hand_finger_left" />
         <dynamics damping="0.3" />
     </joint>
+    <gazebo>
+        <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="joint_hand_finger_right_mimic_joint_plugin">
+            <joint>joint_hand_finger_left</joint>
+            <mimicJoint>joint_hand_finger_right</mimicJoint>
+            <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
+            <hasPID />
+            <multiplier>1.0</multiplier>
+            <offset>0</offset>
+            <sensitiveness>0.0</sensitiveness>
+            <maxEffort>1.0</maxEffort>
+        </plugin>
+    </gazebo>
     <link name="link_finger_left">
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0." />
@@ -385,4 +397,3 @@
         </actuator>
     </transmission>
 </robot>
-
