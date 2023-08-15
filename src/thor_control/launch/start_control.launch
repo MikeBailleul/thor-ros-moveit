@@ -2,6 +2,8 @@
 <launch>
 
   <node name="thor_control" pkg="thor_control" type="thor_control" respawn="false" output="screen">
+    <param name="execute" value="true" />
+    <rosparam command="load" file="$(find thor_control)/config/config.yaml" />
   </node>
 
 </launch>

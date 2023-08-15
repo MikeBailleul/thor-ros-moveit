@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="thor_control" pkg="thor_control" type="thor_control_legacy" respawn="false" output="screen">
+  </node>
+
+</launch>

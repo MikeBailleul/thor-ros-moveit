@@ -11,40 +11,40 @@ joint_limits:
   joint_art1_art2_pitch:
     has_velocity_limits: true
     max_velocity: 1
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
   joint_art2_art3_pitch:
     has_velocity_limits: true
     max_velocity: 1
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
   joint_art3_art4_roll:
     has_velocity_limits: true
     max_velocity: 1
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
   joint_art4_art5_pitch:
     has_velocity_limits: true
     max_velocity: 1
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
   joint_art5_art6_roll:
     has_velocity_limits: true
     max_velocity: 1
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
   joint_base_art1_yaw:
     has_velocity_limits: true
     max_velocity: 1
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
   joint_hand_finger_left:
     has_velocity_limits: true
     max_velocity: 10
-    has_acceleration_limits: false
-    max_acceleration: 0
+    hhas_acceleration_limits: true
+    max_acceleration: 1
   joint_hand_finger_right:
     has_velocity_limits: true
     max_velocity: 10
-    has_acceleration_limits: false
-    max_acceleration: 0
+    has_acceleration_limits: true
+    max_acceleration: 1
