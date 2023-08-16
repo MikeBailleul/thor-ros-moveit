@@ -1,6 +1,9 @@
 #include <thor_control/pick_place_task.h>
 #include <rosparam_shortcuts/rosparam_shortcuts.h>
 #include <actionlib/client/simple_action_client.h>
+#include <shape_msgs/Mesh.h>
+#include <ros/package.h>
+#include <thor_control/mesh_loader.h>
 
 
 namespace thor_control {
@@ -36,24 +39,48 @@ namespace thor_control {
     }
 
     moveit_msgs::CollisionObject createObject(const ros::NodeHandle &pnh) {
-        std::string object_name, object_reference_frame;
-        std::vector<double> object_dimensions;
+        // std::string object_name, object_reference_frame;
+        // std::vector<double> object_dimensions;
+        // geometry_msgs::Pose pose;
+        // std::size_t error = 0;
+        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_name", object_name);
+        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_reference_frame", object_reference_frame);
+        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_dimensions", object_dimensions);
+        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_pose", pose);
+        // rosparam_shortcuts::shutdownIfError(LOGNAME, error);
+
+        // moveit_msgs::CollisionObject object;
+        // object.id = object_name;
+        // object.header.frame_id = object_reference_frame;
+        // object.primitives.resize(1);
+        // object.primitives[0].type = shape_msgs::SolidPrimitive::CYLINDER;
+        // object.primitives[0].dimensions = object_dimensions;
+        // pose.position.z += 0.5 * object_dimensions[0];
+        // object.primitive_poses.push_back(pose);
+        // return object;
+
+        std::string object_name, object_reference_frame, object_mesh_path;
+        double object_mesh_scale;
         geometry_msgs::Pose pose;
         std::size_t error = 0;
         error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_name", object_name);
         error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_reference_frame", object_reference_frame);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_dimensions", object_dimensions);
+        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_mesh_path", object_mesh_path);
+        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_mesh_scale", object_mesh_scale);
         error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_pose", pose);
         rosparam_shortcuts::shutdownIfError(LOGNAME, error);
+
+        // Load the mesh using the mesh_loader function
+        shape_msgs::Mesh mesh = loadMesh(object_mesh_path, object_mesh_scale);
 
         moveit_msgs::CollisionObject object;
         object.id = object_name;
         object.header.frame_id = object_reference_frame;
-        object.primitives.resize(1);
-        object.primitives[0].type = shape_msgs::SolidPrimitive::CYLINDER;
-        object.primitives[0].dimensions = object_dimensions;
-        pose.position.z += 0.5 * object_dimensions[0];
-        object.primitive_poses.push_back(pose);
+
+        object.meshes.resize(1);
+        object.meshes[0] = mesh;
+        object.mesh_poses.push_back(pose);
+
         return object;
     }
 
@@ -206,9 +233,6 @@ namespace thor_control {
                 auto stage = std::make_unique<stages::MoveRelative>("approach object", cartesian_planner);
                 stage->properties().set("marker_ns", "approach_object");
                 stage->properties().set("link", hand_frame_);
-                // stage->properties().set("max_ik_solutions", 13);
-                // state->properties().set("max_ik_solutions", 13);
-                // stage->properties().set("attempts", 10);
                 stage->properties().configureInitFrom(Stage::PARENT, {"group"});
                 stage->setMinMaxDistance(approach_object_min_dist_, approach_object_max_dist_);
 
@@ -418,7 +442,7 @@ namespace thor_control {
             {
                 auto stage = std::make_unique<stages::MoveRelative>("retreat after place", cartesian_planner);
                 stage->properties().configureInitFrom(Stage::PARENT, {"group"});
-                stage->setMinMaxDistance(.12, .25);
+                stage->setMinMaxDistance(0, .25);
                 stage->setIKFrame(hand_frame_);
                 stage->properties().set("marker_ns", "retreat");
                 geometry_msgs::Vector3Stamped vec;

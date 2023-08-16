@@ -3,6 +3,8 @@ project(thor_control)
 
 # Find Eigen3
 find_package(Eigen3 REQUIRED)
+# Find Assimp
+find_package(assimp REQUIRED)
 
 # Find catkin and the required components
 find_package(catkin REQUIRED COMPONENTS
@@ -31,11 +33,15 @@ include_directories(
   include
   ${EIGEN3_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
+  ${ASSIMP_INCLUDE_DIRS}
 )
 
 # Declare a C++ executable
 add_executable(thor_control src/thor_control.cpp src/pick_place_task.cpp)
 add_executable(thor_control_legacy src/thor_control_legacy.cpp)
+
+# Declare a C++ library
+add_library(mesh_loader src/mesh_loader.cpp)
 
 # Specify libraries to link the executable with
 target_link_libraries(thor_control
@@ -43,4 +49,9 @@ target_link_libraries(thor_control
 )
 target_link_libraries(thor_control_legacy
   ${catkin_LIBRARIES}
+)
+target_link_libraries(thor_control
+  mesh_loader
+  ${catkin_LIBRARIES}
+  ${ASSIMP_LIBRARIES}
 )
