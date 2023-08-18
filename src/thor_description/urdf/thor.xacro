@@ -31,7 +31,7 @@
 
         <inertial>
             <mass value="20" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="4778335232" iyy="9956602880" izz="12350248960" ixy="61676072" ixz="-346234336" iyz="-3673513" />
         </inertial>
     </link>
 
@@ -67,7 +67,7 @@
 
         <inertial>
             <mass value="1.6" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="2091996160" iyy="2178797312" izz="1449157760" ixy="-6433.202148" ixz="-9487.117188" iyz="96796960" />
         </inertial>
     </link>
 
@@ -98,7 +98,7 @@
 
         <inertial>
             <mass value="0.8" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="2494758144" iyy="5296528896" izz="4277223680" ixy="169831.156250" ixz="-192684608" iyz="-4347370" />l
         </inertial>
     </link>
 
@@ -130,7 +130,7 @@
 
         <inertial>
             <mass value="1.1" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="509821408" iyy="861984512" izz="946194816" ixy="-4423478.5" ixz="1108099" iyz="-62569.3125" />
         </inertial>
     </link>
 
@@ -163,7 +163,7 @@
 
         <inertial>
             <mass value="0.5" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="766526720" iyy="898525120" izz="718228096" ixy="513188.25" ixz="-15419.867188" iyz="546204.625" />
         </inertial>
     </link>
 
@@ -196,7 +196,7 @@
 
         <inertial>
             <mass value="0.5" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="22853730" iyy="16640192" izz="36724072" ixy="-103.737335" ixz="-10548.656250" iyz="-0.059193" />
         </inertial>
     </link>
 
@@ -229,7 +229,7 @@
 
         <inertial>
             <mass value="0.5" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="33753776" iyy="33753756" izz="24939260" ixy="-2.472111" ixz="-21.388384" iyz="0.078231" />
         </inertial>
     </link>
 
@@ -257,6 +257,11 @@
 
             <material name="black" />
         </visual>
+
+        <inertial>
+            <mass value="0.11" />
+            <inertia ixx="17803724" iyy="21783168" izz="28014524" ixy="-414543.5" ixz="225471.4375" iyz="-1840743.875" />
+        </inertial>
     </link>
 
     <joint name="joint_hand_finger_left" type="prismatic">
@@ -265,7 +270,7 @@
         <origin rpy="0 0 0" xyz="0.05 0.02 0" />
         <axis xyz="-0.5547 0.8321 0"/>
         <limit effort="100" lower="0.0" upper="0.06" velocity="10" />
-        <dynamics damping="0.3" />
+        <dynamics damping="0.3" friction="0.5" />
     </joint>
     <joint name="joint_hand_finger_right" type="prismatic">
         <parent link="link_hand" />
@@ -274,16 +279,16 @@
         <axis xyz="0.5547 0.8321 0"/>
         <limit effort="100" lower="0.0" upper="0.06" velocity="10" />
         <mimic joint="joint_hand_finger_left" />
-        <dynamics damping="0.3" />
+        <dynamics damping="0.3" friction="0.5" />
     </joint>
 
     <xacro:gazebo_mimic_joint_plugin name_prefix="joint_hand_finger_right"
         parent_joint="joint_hand_finger_left" mimic_joint="joint_hand_finger_right"
-        has_pid="true" />
+        has_pid="false" />
 
     <link name="link_finger_left">
         <collision>
-            <origin xyz="0 0 0." rpy="0 0 0" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
                 <mesh filename="package://thor_description/meshes/finger.stl"
                     scale="-0.001 0.001 0.001" />
@@ -299,6 +304,11 @@
 
             <material name="white" />
         </visual>
+
+        <inertial>
+            <mass value="0.01" />
+            <inertia ixx="3358780.25" iyy="627437.875" izz="3410634.5" ixy="-145110.265625" ixz="93.539124" iyz="1280.361816" />
+        </inertial>
     </link>
 
     <link name="link_finger_right">
@@ -319,6 +329,11 @@
 
             <material name="white" />
         </visual>
+
+        <inertial>
+            <mass value="0.01" />
+            <inertia ixx="3358780.25" iyy="627437.875" izz="3410634.5" ixy="-145110.265625" ixz="93.539124" iyz="1280.361816" />
+        </inertial>
     </link>
 
 </robot>

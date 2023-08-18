@@ -31,6 +31,15 @@
     <gazebo reference="link_art6">
         <material>Gazebo/Black</material>
     </gazebo>
+    <gazebo reference="link_hand">
+        <material>Gazebo/Black</material>
+    </gazebo>
+    <gazebo reference="link_finger_left">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <gazebo reference="link_finger_right">
+        <material>Gazebo/White</material>
+    </gazebo>
     <link name="dummy_link" />
     <joint name="dummy_joint" type="fixed">
         <parent link="dummy_link" />
@@ -54,7 +63,7 @@
         </visual>
         <inertial>
             <mass value="20" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="4778335232" ixy="61676072" ixz="-346234336" iyy="9956602880" iyz="-3673513" izz="12350248960" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -83,7 +92,7 @@
         </visual>
         <inertial>
             <mass value="1.6" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="2091996160" ixy="-6433.202148" ixz="-9487.117188" iyy="2178797312" iyz="96796960" izz="1449157760" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -110,7 +119,8 @@
         </visual>
         <inertial>
             <mass value="0.8" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="2494758144" ixy="169831.156250" ixz="-192684608" iyy="5296528896" iyz="-4347370" izz="4277223680" />
+            l
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -137,7 +147,7 @@
         </visual>
         <inertial>
             <mass value="1.1" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="509821408" ixy="-4423478.5" ixz="1108099" iyy="861984512" iyz="-62569.3125" izz="946194816" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -164,7 +174,7 @@
         </visual>
         <inertial>
             <mass value="0.5" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="766526720" ixy="513188.25" ixz="-15419.867188" iyy="898525120" iyz="546204.625" izz="718228096" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -191,7 +201,7 @@
         </visual>
         <inertial>
             <mass value="0.5" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="22853730" ixy="-103.737335" ixz="-10548.656250" iyy="16640192" iyz="-0.059193" izz="36724072" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -218,7 +228,7 @@
         </visual>
         <inertial>
             <mass value="0.5" />
-            <inertia ixx="0.03" ixy="0.0" ixz="0.0" iyy="0.03" iyz="0.0" izz="0.03" />
+            <inertia ixx="33753776" ixy="-2.472111" ixz="-21.388384" iyy="33753756" iyz="0.078231" izz="24939260" />
             <origin xyz="0 0 0" rpy="0 0 0" />
         </inertial>
     </link>
@@ -242,9 +252,9 @@
             <material name="black" />
         </visual>
         <inertial>
-            <mass value="0.1" />
+            <mass value="0.11" />
+            <inertia ixx="17803724" ixy="-414543.5" ixz="225471.4375" iyy="21783168" iyz="-1840743.875" izz="28014524" />
             <origin xyz="0 0 0" rpy="0 0 0" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <joint name="joint_hand_finger_left" type="prismatic">
@@ -253,7 +263,7 @@
         <origin rpy="0 0 0" xyz="0.05 0.02 0" />
         <axis xyz="-0.5547 0.8321 0" />
         <limit effort="100" lower="0.0" upper="0.06" velocity="10" />
-        <dynamics damping="0.3" />
+        <dynamics damping="0.3" friction="0.5" />
     </joint>
     <joint name="joint_hand_finger_right" type="prismatic">
         <parent link="link_hand" />
@@ -262,14 +272,12 @@
         <axis xyz="0.5547 0.8321 0" />
         <limit effort="100" lower="0.0" upper="0.06" velocity="10" />
         <mimic joint="joint_hand_finger_left" />
-        <dynamics damping="0.3" />
+        <dynamics damping="0.3" friction="0.5" />
     </joint>
     <gazebo>
         <plugin filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so" name="joint_hand_finger_right_mimic_joint_plugin">
             <joint>joint_hand_finger_left</joint>
             <mimicJoint>joint_hand_finger_right</mimicJoint>
-            <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
-            <hasPID />
             <multiplier>1.0</multiplier>
             <offset>0</offset>
             <sensitiveness>0.0</sensitiveness>
@@ -278,7 +286,7 @@
     </gazebo>
     <link name="link_finger_left">
         <collision>
-            <origin rpy="0 0 0" xyz="0 0 0." />
+            <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
                 <mesh filename="package://thor_description/meshes/finger.stl" scale="-0.001 0.001 0.001" />
             </geometry>
@@ -291,9 +299,9 @@
             <material name="white" />
         </visual>
         <inertial>
-            <mass value="0.1" />
+            <mass value="0.01" />
+            <inertia ixx="3358780.25" ixy="-145110.265625" ixz="93.539124" iyy="627437.875" iyz="1280.361816" izz="3410634.5" />
             <origin xyz="0 0 0" rpy="0 0 0" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="link_finger_right">
@@ -311,9 +319,9 @@
             <material name="white" />
         </visual>
         <inertial>
-            <mass value="0.1" />
+            <mass value="0.01" />
+            <inertia ixx="3358780.25" ixy="-145110.265625" ixz="93.539124" iyy="627437.875" iyz="1280.361816" izz="3410634.5" />
             <origin xyz="0 0 0" rpy="0 0 0" />
-            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <transmission name="trans_joint_base_art1_yaw">

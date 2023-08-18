@@ -3,49 +3,13 @@ joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
 
-gazebo_ros_control:
-  pid_gains:
-    joint_base_art1_yaw:
-      p: 100000
-      d: 1
-      i: 1
-      i_clamp: 1
-    joint_art1_art2_pitch:
-      p: 100000
-      d: 1
-      i: 1
-      i_clamp: 1
-    joint_art2_art3_pitch:
-      p: 10000
-      d: 1
-      i: 1
-      i_clamp: 1
-    joint_art3_art4_roll:
-      p: 1000
-      d: 1
-      i: 1
-      i_clamp: 1
-    joint_art4_art5_pitch:
-      p: 10000
-      d: 1
-      i: 1
-      i_clamp: 1
-    joint_art5_art6_roll:
-      p: 1000
-      d: 1
-      i: 1
-      i_clamp: 1
-    joint_hand_finger_left:
-      p: 10000
-      d: 10
-      i: 1
-      i_clamp: 1
-    joint_hand_finger_right:
-      p: 10000
-      d: 10
-      i: 1
-      i_clamp: 1
-
+# gazebo_ros_control:
+#   pid_gains:
+#     joint_base_art1_yaw:
+#       p: 100000
+#       d: 1
+#       i: 1
+#       i_clamp: 1
 arm_position_controller:
   constraints:
     goal_time: 0.8
