@@ -20,16 +20,15 @@ surface_link: "table"
 
 # Collision object for picking
 # CYLINDER object specifications
-object_name: "object"
+object_name: "egg"
 object_dimensions: [0.25, 0.02] # [height, radius]
 object_pose: [0, -0.35, 0.0, 0, 0, 0]
-object_mesh_path: "/meshes/egg.stl"
-object_mesh_scale: 0.002
+object_scale: 0.002
 
 # Table model
 spawn_table: true
 table_name: "table"
-table_dimensions: [0.4, 1, 0.1]  # [length, width, height]
+table_dimensions: [0.5, 1.2, 0.1]  # [length, width, height]
 table_pose: [0, 0, 0, 0, 0, 0]
 
 # Gripper grasp frame transform [x,y,z,r,p,y]

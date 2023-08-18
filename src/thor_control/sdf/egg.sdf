@@ -1,0 +1,23 @@
+<sdf version='1.7'>
+  <model name='{object_name}'>
+    <link name='link'>
+      <pose>{object_pose}</pose>
+      <collision name='collision'>
+        <geometry>
+          <mesh>
+            <uri>{object_path}</uri>
+            <scale>{object_scale} {object_scale} {object_scale}</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>{object_path}</uri>
+            <scale>{object_scale} {object_scale} {object_scale}</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

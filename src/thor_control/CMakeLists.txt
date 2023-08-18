@@ -1,10 +1,14 @@
 cmake_minimum_required(VERSION 3.0.2)
+set(CMAKE_CXX_STANDARD 17)
 project(thor_control)
 
 # Find Eigen3
 find_package(Eigen3 REQUIRED)
 # Find Assimp
 find_package(assimp REQUIRED)
+# Find Gazebo
+find_package(gazebo REQUIRED)
+
 
 # Find catkin and the required components
 find_package(catkin REQUIRED COMPONENTS
@@ -34,6 +38,7 @@ include_directories(
   ${EIGEN3_INCLUDE_DIR}
   ${catkin_INCLUDE_DIRS}
   ${ASSIMP_INCLUDE_DIRS}
+  ${GAZEBO_INCLUDE_DIRS}
 )
 
 # Declare a C++ executable
@@ -46,6 +51,9 @@ add_library(mesh_loader src/mesh_loader.cpp)
 # Specify libraries to link the executable with
 target_link_libraries(thor_control
   ${catkin_LIBRARIES}
+  ${ASSIMP_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  mesh_loader
 )
 target_link_libraries(thor_control_legacy
   ${catkin_LIBRARIES}

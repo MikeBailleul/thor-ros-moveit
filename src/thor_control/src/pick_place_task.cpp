@@ -39,39 +39,18 @@ namespace thor_control {
     }
 
     moveit_msgs::CollisionObject createObject(const ros::NodeHandle &pnh) {
-        // std::string object_name, object_reference_frame;
-        // std::vector<double> object_dimensions;
-        // geometry_msgs::Pose pose;
-        // std::size_t error = 0;
-        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_name", object_name);
-        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_reference_frame", object_reference_frame);
-        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_dimensions", object_dimensions);
-        // error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_pose", pose);
-        // rosparam_shortcuts::shutdownIfError(LOGNAME, error);
-
-        // moveit_msgs::CollisionObject object;
-        // object.id = object_name;
-        // object.header.frame_id = object_reference_frame;
-        // object.primitives.resize(1);
-        // object.primitives[0].type = shape_msgs::SolidPrimitive::CYLINDER;
-        // object.primitives[0].dimensions = object_dimensions;
-        // pose.position.z += 0.5 * object_dimensions[0];
-        // object.primitive_poses.push_back(pose);
-        // return object;
-
-        std::string object_name, object_reference_frame, object_mesh_path;
-        double object_mesh_scale;
-        geometry_msgs::Pose pose;
+        std::string object_name, object_reference_frame;
+        double object_scale;
+        geometry_msgs::Pose object_pose;
         std::size_t error = 0;
         error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_name", object_name);
         error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_reference_frame", object_reference_frame);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_mesh_path", object_mesh_path);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_mesh_scale", object_mesh_scale);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_pose", pose);
+        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_scale", object_scale);
+        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_pose", object_pose);
         rosparam_shortcuts::shutdownIfError(LOGNAME, error);
 
         // Load the mesh using the mesh_loader function
-        shape_msgs::Mesh mesh = loadMesh(object_mesh_path, object_mesh_scale);
+        shape_msgs::Mesh mesh = loadMeshRviz(object_name, object_scale);
 
         moveit_msgs::CollisionObject object;
         object.id = object_name;
@@ -79,7 +58,9 @@ namespace thor_control {
 
         object.meshes.resize(1);
         object.meshes[0] = mesh;
-        object.mesh_poses.push_back(pose);
+        object.mesh_poses.push_back(object_pose);
+
+        loadMeshGazebo(object_name, object_scale, object_pose);
 
         return object;
     }
