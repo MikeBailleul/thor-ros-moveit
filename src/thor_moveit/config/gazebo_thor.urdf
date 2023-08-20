@@ -40,8 +40,138 @@
     <gazebo reference="link_finger_right">
         <material>Gazebo/White</material>
     </gazebo>
+    <!-- Counter -->
+    <link name="counter">
+        <visual>
+            <geometry>
+                <box size="0.59 0.38 0.1" />
+            </geometry>
+            <material name="dark_grey">
+                <color rgba="0.2 0.2 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.59 0.38 0.1" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <!-- Stove -->
+    <link name="stove">
+        <visual>
+            <geometry>
+                <box size="0.59 0.64 0.1" />
+            </geometry>
+            <material name="light_grey">
+                <color rgba="1 1 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.59 0.64 0.1" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <!-- Walls -->
+    <link name="wall_left">
+        <visual>
+            <geometry>
+                <box size="0.59 0.1 1" />
+            </geometry>
+            <material name="brown">
+                <color rgba="0.871 0.722 0.529 1.0" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.59 0.1 1" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <link name="wall_back">
+        <visual>
+            <geometry>
+                <box size="0.1 1.02 1" />
+            </geometry>
+            <material name="brown" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.1 1.02 1" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <!-- Roof -->
+    <link name="roof">
+        <visual>
+            <geometry>
+                <box size="0.6 1.02 0.42" />
+                <!--0.6 = 0.3 + 0.3 au pif -->
+            </geometry>
+            <material name="brown" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.6 1.02 0.42" />
+                <!--0.6 = 0.3 + 0.3 au pif -->
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    <!-- Joints to keep everything in place -->
+    <joint name="joint_counter" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 -0.05" />
+        <parent link="dummy_link" />
+        <child link="counter" />
+    </joint>
+    <joint name="joint_stove" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0.51 -0.05" />
+        <parent link="dummy_link" />
+        <child link="stove" />
+    </joint>
+    <joint name="joint_wall_left" type="fixed">
+        <origin rpy="0 0 0" xyz="0 -0.24 0.5" />
+        <parent link="dummy_link" />
+        <child link="wall_left" />
+    </joint>
+    <joint name="joint_wall_back" type="fixed">
+        <origin rpy="0 0 0" xyz="-0.345 0.32 0.5" />
+        <parent link="dummy_link" />
+        <child link="wall_back" />
+    </joint>
+    <joint name="joint_roof" type="fixed">
+        <origin rpy="0 0 0" xyz="-0.3 0.32 0.79" />
+        <parent link="dummy_link" />
+        <child link="roof" />
+    </joint>
     <link name="dummy_link" />
     <joint name="dummy_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0.1 0 0" />
+        <!-- move thor a bit forward on the counter -->
         <parent link="dummy_link" />
         <child link="link_base" />
     </joint>

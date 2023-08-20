@@ -4,9 +4,12 @@
 
     <xacro:include filename="$(find thor_description)/urdf/gazebo.xacro" />
 
+    <xacro:include filename="$(find thor_description)/urdf/env.xacro" />
+
     <link name="dummy_link" />
 
     <joint name="dummy_joint" type="fixed">
+        <origin xyz="0.1 0 0" rpy="0 0 0"/>   <!-- move thor a bit forward on the counter -->
         <parent link="dummy_link" />
         <child link="link_base" />
     </joint>

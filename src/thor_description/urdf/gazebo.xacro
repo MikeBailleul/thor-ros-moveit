@@ -39,21 +39,21 @@
     </gazebo>
 
     <xacro:macro name="gazebo_mimic_joint_plugin" params="name_prefix parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=1.0 robot_namespace:=''">
-    <gazebo>
-      <plugin name="${name_prefix}_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
-        <joint>${parent_joint}</joint>
-        <mimicJoint>${mimic_joint}</mimicJoint>
-        <xacro:if value="${has_pid}"> <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
-          <hasPID />
-        </xacro:if>
-        <multiplier>${multiplier}</multiplier>
-        <offset>${offset}</offset>
-        <sensitiveness>${sensitiveness}</sensitiveness>
-        <maxEffort>${max_effort}</maxEffort>
-        <xacro:unless value="${robot_namespace == ''}">
-          <robotNamespace>${robot_namespace}</robotNamespace>
-        </xacro:unless>
-      </plugin>
-    </gazebo>
-  </xacro:macro>
+        <gazebo>
+            <plugin name="${name_prefix}_mimic_joint_plugin" filename="libroboticsgroup_upatras_gazebo_mimic_joint_plugin.so">
+                <joint>${parent_joint}</joint>
+                <mimicJoint>${mimic_joint}</mimicJoint>
+                <xacro:if value="${has_pid}"> <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
+                    <hasPID />
+                </xacro:if>
+                <multiplier>${multiplier}</multiplier>
+                <offset>${offset}</offset>
+                <sensitiveness>${sensitiveness}</sensitiveness>
+                <maxEffort>${max_effort}</maxEffort>
+                <xacro:unless value="${robot_namespace == ''}">
+                    <robotNamespace>${robot_namespace}</robotNamespace>
+                </xacro:unless>
+            </plugin>
+        </gazebo>
+    </xacro:macro>
 </robot>
