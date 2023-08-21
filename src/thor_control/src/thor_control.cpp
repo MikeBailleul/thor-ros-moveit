@@ -11,8 +11,6 @@ int main(int argc, char** argv) {
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
 
-	thor_control::setupDemoScene(pnh);
-
 	// Construct and run pick/place task
 	thor_control::PickPlaceTask pick_place_task("pick_place_task", pnh);
 	if (!pick_place_task.init()) {

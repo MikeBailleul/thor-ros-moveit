@@ -23,3 +23,11 @@ shape_msgs::Mesh loadMeshRviz(const std::string& name, double scale);
 
 // Load a mesh for use in Gazebo, given the name of the mesh and an optional scaling factor
 void loadMeshGazebo(const std::string& name, double scale, const geometry_msgs::Pose& pose);
+
+struct BoundingBox {
+    float width;
+    float height;
+    float depth;
+};
+
+BoundingBox getBoundingBox(const shape_msgs::Mesh& mesh);

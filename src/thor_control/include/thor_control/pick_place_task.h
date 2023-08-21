@@ -21,14 +21,12 @@
 #include <moveit/task_constructor/solvers/cartesian_path.h>
 #include <moveit/task_constructor/solvers/pipeline_planner.h>
 #include <moveit_task_constructor_msgs/ExecuteTaskSolutionAction.h>
+#include <thor_control/mesh_loader.h>
 
 #pragma once
 
 namespace thor_control {
     using namespace moveit::task_constructor;
-
-    // prepare a demo environment from ROS parameters under pnh
-    void setupDemoScene(ros::NodeHandle &pnh);
 
     class PickPlaceTask {
 
@@ -44,6 +42,8 @@ namespace thor_control {
 
     private:
         void loadParameters();
+        void spawnObject(moveit::planning_interface::PlanningSceneInterface &psi);
+        moveit_msgs::CollisionObject createObject();
 
         static constexpr char LOGNAME[]{"pick_place_task"};
 
@@ -60,11 +60,15 @@ namespace thor_control {
 
         // object + surface
         std::vector<std::string> support_surfaces_;
+        std::string surface_link1_;
+        std::string surface_link2_;
         std::string object_reference_frame_;
-        std::string surface_link_;
         std::string object_name_;
         std::string world_frame_;
-        std::vector<double> object_dimensions_;
+        double object_scale_;
+        geometry_msgs::Pose object_pose_;
+        moveit_msgs::CollisionObject object_;
+        BoundingBox object_bbox_;
 
         // Predefined pose targets
         std::string hand_open_pose_;
@@ -80,7 +84,6 @@ namespace thor_control {
 
         // Place metrics
         geometry_msgs::Pose place_pose_;
-        double place_surface_offset_;
         
     };
 }

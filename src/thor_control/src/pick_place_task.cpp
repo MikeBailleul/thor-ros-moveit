@@ -11,72 +11,37 @@ namespace thor_control {
     constexpr char LOGNAME[] = "pick_place_task";
     constexpr char PickPlaceTask::LOGNAME[];
 
-    void spawnObject(moveit::planning_interface::PlanningSceneInterface &psi, const moveit_msgs::CollisionObject &object) {
-        if (!psi.applyCollisionObject(object))
-            throw std::runtime_error("Failed to spawn object: " + object.id);
+    PickPlaceTask::PickPlaceTask(const std::string &task_name, const ros::NodeHandle &pnh)
+        : pnh_(pnh), task_name_(task_name) {
+
+        loadParameters();
+        ros::Duration(1.0).sleep(); // Wait for ApplyPlanningScene service
+        moveit::planning_interface::PlanningSceneInterface psi;
+        object_ = createObject();
+        spawnObject(psi);
     }
 
-    moveit_msgs::CollisionObject createTable(const ros::NodeHandle &pnh) {
-        std::string table_name, table_reference_frame;
-        std::vector<double> table_dimensions;
-        geometry_msgs::Pose pose;
-        std::size_t errors = 0;
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh, "table_name", table_name);
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh, "table_reference_frame", table_reference_frame);
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh, "table_dimensions", table_dimensions);
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh, "table_pose", pose);
-        rosparam_shortcuts::shutdownIfError(LOGNAME, errors);
-
-        moveit_msgs::CollisionObject object;
-        object.id = table_name;
-        object.header.frame_id = table_reference_frame;
-        object.primitives.resize(1);
-        object.primitives[0].type = shape_msgs::SolidPrimitive::BOX;
-        object.primitives[0].dimensions = table_dimensions;
-        pose.position.z -= 0.5 * table_dimensions[2]; // align surface with world
-        object.primitive_poses.push_back(pose);
-        return object;
-    }
-
-    moveit_msgs::CollisionObject createObject(const ros::NodeHandle &pnh) {
-        std::string object_name, object_reference_frame;
-        double object_scale;
-        geometry_msgs::Pose object_pose;
-        std::size_t error = 0;
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_name", object_name);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_reference_frame", object_reference_frame);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_scale", object_scale);
-        error += !rosparam_shortcuts::get(LOGNAME, pnh, "object_pose", object_pose);
-        rosparam_shortcuts::shutdownIfError(LOGNAME, error);
-
+    moveit_msgs::CollisionObject PickPlaceTask::createObject() {
         // Load the mesh using the mesh_loader function
-        shape_msgs::Mesh mesh = loadMeshRviz(object_name, object_scale);
+        shape_msgs::Mesh mesh = loadMeshRviz(object_name_, object_scale_);
+        object_bbox_ = getBoundingBox(mesh);
 
         moveit_msgs::CollisionObject object;
-        object.id = object_name;
-        object.header.frame_id = object_reference_frame;
+        object.id = object_name_;
+        object.header.frame_id = object_reference_frame_;
 
         object.meshes.resize(1);
         object.meshes[0] = mesh;
-        object.mesh_poses.push_back(object_pose);
+        object.mesh_poses.push_back(object_pose_);
 
-        loadMeshGazebo(object_name, object_scale, object_pose);
+        loadMeshGazebo(object_name_, object_scale_, object_pose_);
 
         return object;
     }
 
-    void setupDemoScene(ros::NodeHandle &pnh) {
-        // Add table and object to planning scene
-        ros::Duration(1.0).sleep(); // Wait for ApplyPlanningScene service
-        moveit::planning_interface::PlanningSceneInterface psi;
-        if (pnh.param("spawn_table", true))
-            spawnObject(psi, createTable(pnh));
-        spawnObject(psi, createObject(pnh));
-    }
-
-    PickPlaceTask::PickPlaceTask(const std::string &task_name, const ros::NodeHandle &pnh)
-        : pnh_(pnh), task_name_(task_name) {
-        loadParameters();
+    void PickPlaceTask::spawnObject(moveit::planning_interface::PlanningSceneInterface &psi) {
+        if (!psi.applyCollisionObject(object_))
+            throw std::runtime_error("Failed to spawn object: " + object_.id);
     }
 
     void PickPlaceTask::loadParameters() {
@@ -103,24 +68,24 @@ namespace thor_control {
 
         // Target object
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "object_name", object_name_);
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "object_dimensions", object_dimensions_);
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "object_reference_frame", object_reference_frame_);
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "surface_link", surface_link_);
-        support_surfaces_ = {surface_link_};
+        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "surface_link1", surface_link1_);
+        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "surface_link2", surface_link2_);
+        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "object_scale", object_scale_);
+        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "object_pose", object_pose_);
+        support_surfaces_ = {surface_link1_, surface_link2_};
 
         // Pick/Place metrics
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "approach_object_min_dist", approach_object_min_dist_);
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "approach_object_max_dist", approach_object_max_dist_);
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "lift_object_min_dist", lift_object_min_dist_);
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "lift_object_max_dist", lift_object_max_dist_);
-        errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "place_surface_offset", place_surface_offset_);
         errors += !rosparam_shortcuts::get(LOGNAME, pnh_, "place_pose", place_pose_);
         rosparam_shortcuts::shutdownIfError(LOGNAME, errors);
     }
 
     bool PickPlaceTask::init() {
         ROS_INFO_NAMED(LOGNAME, "Initializing task pipeline");
-        const std::string object = object_name_;
 
         // Reset ROS introspection before constructing the new object
         // TODO(v4hn): global storage for Introspection services to enable one-liner
@@ -159,10 +124,10 @@ namespace thor_control {
             // Verify that object is not attached
             auto applicability_filter =
                 std::make_unique<stages::PredicateFilter>("applicability test", std::move(current_state));
-            applicability_filter->setPredicate([object](const SolutionBase &s, std::string &comment)
+            applicability_filter->setPredicate([this](const SolutionBase &s, std::string &comment)
                                                {
-			if (s.start()->scene()->getCurrentState().hasAttachedBody(object)) {
-				comment = "object with id '" + object + "' is already attached and cannot be picked";
+			if (s.start()->scene()->getCurrentState().hasAttachedBody(object_name_)) {
+				comment = "object with id '" + object_name_ + "' is already attached and cannot be picked";
 				return false;
 			}
 			return true; });
@@ -235,7 +200,7 @@ namespace thor_control {
                 stage->properties().configureInitFrom(Stage::PARENT);
                 stage->properties().set("marker_ns", "grasp_pose");
                 stage->setPreGraspPose(hand_open_pose_);
-                stage->setObject(object);
+                stage->setObject(object_name_);
                 stage->setAngleDelta(M_PI / 12);
                 stage->setMonitoredStage(initial_state_ptr); // hook into successful initial-phase solutions
 
@@ -255,7 +220,7 @@ namespace thor_control {
             {
                 auto stage = std::make_unique<stages::ModifyPlanningScene>("allow collision (hand,object)");
                 stage->allowCollisions(
-                    object, t.getRobotModel()->getJointModelGroup(hand_group_name_)->getLinkModelNamesWithCollisionGeometry(),
+                    object_name_, t.getRobotModel()->getJointModelGroup(hand_group_name_)->getLinkModelNamesWithCollisionGeometry(),
                     true);
                 grasp->insert(std::move(stage));
             }
@@ -275,7 +240,7 @@ namespace thor_control {
              ***************************************************/
             {
                 auto stage = std::make_unique<stages::ModifyPlanningScene>("attach object");
-                stage->attachObject(object, hand_frame_);
+                stage->attachObject(object_name_, hand_frame_);
                 grasp->insert(std::move(stage));
             }
 
@@ -284,7 +249,7 @@ namespace thor_control {
              ***************************************************/
             {
                 auto stage = std::make_unique<stages::ModifyPlanningScene>("allow collision (object,support)");
-                stage->allowCollisions({object}, support_surfaces_, true);
+                stage->allowCollisions({object_name_}, support_surfaces_, true);
                 grasp->insert(std::move(stage));
             }
 
@@ -311,7 +276,7 @@ namespace thor_control {
              ***************************************************/
             {
                 auto stage = std::make_unique<stages::ModifyPlanningScene>("forbid collision (object,support)");
-                stage->allowCollisions({object}, support_surfaces_, false);
+                stage->allowCollisions({object_name_}, support_surfaces_, false);
                 grasp->insert(std::move(stage));
             }
 
@@ -370,13 +335,12 @@ namespace thor_control {
                 auto stage = std::make_unique<stages::GeneratePlacePose>("generate place pose");
                 stage->properties().configureInitFrom(Stage::PARENT, {"ik_frame"});
                 stage->properties().set("marker_ns", "place_pose");
-                stage->setObject(object);
+                stage->setObject(object_name_);
 
                 // Set target pose
                 geometry_msgs::PoseStamped p;
                 p.header.frame_id = object_reference_frame_;
                 p.pose = place_pose_;
-                p.pose.position.z += 0.5 * object_dimensions_[0] + place_surface_offset_;
                 stage->setPose(p);
                 stage->setMonitoredStage(pick_stage_ptr); // hook into successful pick solutions
 

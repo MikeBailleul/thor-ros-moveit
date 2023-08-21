@@ -12,9 +12,14 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <algorithm>
+#include <limits>
 #include <gazebo/transport/transport.hh>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Point.h>
 #include <tf/transform_datatypes.h>
+#include <thor_control/mesh_loader.h>
+
 
 bool isGazeboRunning() {
     if (std::system("pgrep gzserver")) {
@@ -144,4 +149,27 @@ void loadMeshGazebo(const std::string& name, double scale, const geometry_msgs::
         // Delete the temporary file
         std::remove(tempFileName.c_str());
     }
+}
+
+BoundingBox getBoundingBox(const shape_msgs::Mesh& mesh) {
+    float minX, minY, minZ, maxX, maxY, maxZ;
+
+    minX = minY = minZ = std::numeric_limits<float>::max();
+    maxX = maxY = maxZ = std::numeric_limits<float>::min();
+
+    for (const geometry_msgs::Point& vertex : mesh.vertices) {
+        minX = std::min(minX, static_cast<float>(vertex.x));
+        minY = std::min(minY, static_cast<float>(vertex.y));
+        minZ = std::min(minZ, static_cast<float>(vertex.z));
+        maxX = std::max(maxX, static_cast<float>(vertex.x));
+        maxY = std::max(maxY, static_cast<float>(vertex.y));
+        maxZ = std::max(maxZ, static_cast<float>(vertex.z));
+    }
+
+    BoundingBox bbox;
+    bbox.width = maxX - minX;
+    bbox.height = maxY - minY;
+    bbox.depth = maxZ - minZ;
+
+    return bbox;
 }
