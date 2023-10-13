@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     spinner.start();
 
     ros::Time ts = ros::Time::now();
-    ros::Rate rate(5);
+    ros::Rate rate(4);
 
     while (ros::ok()) {
         ros::Duration d = ros::Time::now() - ts;

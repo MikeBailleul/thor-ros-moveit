@@ -6,6 +6,7 @@
 #include <hardware_interface/robot_hw.h>
 #include <sensor_msgs/JointState.h>
 #include <ros/ros.h>
+#include <libserial/SerialStream.h>
 
 class ThorHardwareInterface : public hardware_interface::RobotHW {
 private:
@@ -13,8 +14,11 @@ private:
     hardware_interface::PositionJointInterface joint_pos_interface;
     std::vector<std::string> joint_names;
     ros::Publisher joint_state_pub;
+    LibSerial::SerialStream* port;
 
     double cmd[8];
+    std::string lastArduinoCommandArm;
+    std::string lastArduinoCommandGripper;
 
     double pos[8];
     double vel[8];
@@ -22,6 +26,7 @@ private:
 
 public:
     ThorHardwareInterface();
+    ~ThorHardwareInterface();
     void read();
     void write();
 };
